@@ -10,15 +10,24 @@ export interface ModuleContext {
 export class ModuleEngine {
   private module: Module;
   private states: Map<string, State>;
+  private isClone: boolean = false;
   
-  constructor(module: Module) {
+  constructor(module: Module, isClone: boolean = false) {
     this.module = module;
     this.states = new Map();
+    this.isClone = isClone;
     
     // Create all states
     for (const [name, definition] of Object.entries(module.states)) {
       this.states.set(name, createState(name, module, definition));
     }
+  }
+  
+  // Clone the entire module engine to avoid state pollution
+  clone(): ModuleEngine {
+    // Deep clone the module
+    const clonedModule = JSON.parse(JSON.stringify(this.module));
+    return new ModuleEngine(clonedModule, true);
   }
   
   // Process module for a person at a given time
@@ -41,7 +50,8 @@ export class ModuleEngine {
       if (!initialState) {
         throw new Error(`Module ${this.module.name} has no Initial state`);
       }
-      context.currentState = initialState.clone();
+      // When using module cloning, states don't need individual cloning
+      context.currentState = this.isClone ? initialState : initialState.clone();
     }
     
     // Process states until we can't continue
@@ -85,13 +95,14 @@ export class ModuleEngine {
         break;
       }
       
-      // Get and clone the next state
+      // Get the next state
       const nextState = this.states.get(nextStateName);
       if (!nextState) {
         throw new Error(`State ${nextStateName} not found in module ${this.module.name}`);
       }
       
-      context.currentState = nextState.clone();
+      // When using module cloning, states don't need individual cloning
+      context.currentState = this.isClone ? nextState : nextState.clone();
     }
     
     if (iterations >= maxIterations) {

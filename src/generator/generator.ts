@@ -87,12 +87,15 @@ export class Generator {
         continue;
       }
       
+      // Clone the module engine for this person to avoid state pollution
+      const engineClone = moduleResult.engine.clone();
+      
       // Simulate person's entire life
       let time = person.birthDate.getTime();
       const endTime = this.options.referenceTime || Date.now();
       
       while (time <= endTime && person.attributes.get('alive')) {
-        await moduleResult.engine.process(person, time);
+        await engineClone.process(person, time);
         time += this.options.timestep || 604800000; // 1 week
       }
     }
