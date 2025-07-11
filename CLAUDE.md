@@ -4,6 +4,13 @@ globs: "*.ts, *.tsx, *.html, *.css, *.js, *.jsx, package.json"
 alwaysApply: false
 ---
 
+Follow this flow:
+* there is ./tasks/ folder with tasks to be done
+* Wait for user to set the task to work on; task will be a file in tasks folder
+* You working only on one task in a time - read the task file description in folder, document plan and progress back into task file. When task is completed, set it to [completed] status in a title.
+* Use ./docs as your memory bank - read current summary of project keep it up-to-date, when you are changing the project
+
+
 Official website: https://ucum.org/
 * Use: bun mcp and lsp mcp
 * Use ast-grep to search for code, refactoring and linting in the project

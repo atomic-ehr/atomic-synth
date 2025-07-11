@@ -2,6 +2,10 @@
   "name": "@atomic-ehr/atomic-synth",
   "module": "src/index.ts",
   "type": "module",
+  "scripts": {
+    "typecheck": "bun bun tsc --noEmit",
+    "test": "bun test"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
