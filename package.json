@@ -1,0 +1,11 @@
+{
+  "name": "@atomic-ehr/atomic-synth",
+  "module": "src/index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
